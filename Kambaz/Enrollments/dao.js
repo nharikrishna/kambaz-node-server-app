@@ -14,6 +14,14 @@ export function getAllEnrollments() {
     return enrollments;
 }
 
+export function getUserCourseEnrollmentId(userId, courseId) {
+    const { enrollments } = Database;
+    const enrollment = enrollments.find(
+        enrollment => enrollment.user === userId && enrollment.course === courseId
+    );
+    return enrollment ? enrollment : null;
+}
+
 export function deleteEnrollment(userId, courseId) {
     const { enrollments } = Database;
 

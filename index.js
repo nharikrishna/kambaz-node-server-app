@@ -10,7 +10,6 @@ import "dotenv/config"
 import session from "express-session";
 
 const app = express()
-console.log("NETLIFY_URL" + process.env.NETLIFY_URL)
 app.use(cors({
     credentials: true,
     origin: process.env.NETLIFY_URL || 'http://localhost:5173',

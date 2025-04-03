@@ -5,7 +5,7 @@ import * as assignmentDao from "../Assignments/dao.js";
 import Database from "../Database/index.js";
 import enrollments from "../Database/enrollments.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
-import {deleteEnrollment} from "../Enrollments/dao.js";
+import {deleteEnrollment, getUserCourseEnrollmentId} from "../Enrollments/dao.js";
 
 export default function CourseRoutes(app) {
     const findCoursesForEnrolledUser = (req, res) => {
@@ -78,6 +78,17 @@ export default function CourseRoutes(app) {
         const { courseId, userId } = req.params;
         const deletedEnrollment = deleteEnrollment(userId, courseId);
         return res.send(deletedEnrollment);
+    });
+
+    app.get("/api/courses/:courseId/enroll/:userId", (req, res) => {
+        const { courseId, userId } = req.params;
+        const enrollmentId = getUserCourseEnrollmentId(userId, courseId);
+
+        if (!enrollmentId) {
+            return res.status(404).json({ message: "Enrollment not found" });
+        }
+
+        return res.json({ enrollmentId });
     });
 
 }
