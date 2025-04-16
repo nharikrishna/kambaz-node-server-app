@@ -6,6 +6,8 @@ export function enrollUserInCourse(userId, courseId) {
     const { enrollments } = Database;
     const newEnrollment = { _id: uuidv4(), user: userId, course: courseId };
     enrollments.push(newEnrollment);
+    console.log("newEnrollment:", newEnrollment);
+    console.log("enrollments: ", enrollments);
     return newEnrollment;
 }
 
@@ -23,7 +25,9 @@ export function getUserCourseEnrollmentId(userId, courseId) {
 }
 
 export function deleteEnrollment(userId, courseId) {
+    console.log("deleteEnrollment", userId, courseId);
     const { enrollments } = Database;
+    console.log("enrollments", enrollments);
 
     const enrollmentIndex = enrollments.findIndex(
         enrollment => enrollment.user === userId && enrollment.course === courseId

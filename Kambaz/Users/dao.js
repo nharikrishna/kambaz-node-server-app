@@ -1,29 +1,47 @@
-import db from "../Database/index.js";
-import { v4 as uuidv4 } from "uuid";
+import model from "./model.js";
+import {v4 as uuidv4} from "uuid";
 
-let { users } = db;
 export const createUser = (user) => {
     const newUser = { ...user, _id: uuidv4() };
-    users = [...users, newUser];
-    return newUser;
+    return model.create(newUser);
 };
 
 export const findAllUsers = () => {
-    return users;
+    return model.find();
 }
 export const findUserById = (userId) => {
-    return users.find((user) => user._id === userId);
+    return model.findById(userId);
 }
 export const findUserByUsername = (username) => {
-    return users.find((user) => user.username === username);
+    return model.findOne({username: username});
 }
 export const findUserByCredentials = (username, password) => {
-    return users.find( (user) => user.username === username && user.password === password );
+    console.log(username, password);
+    return model.findOne({username: username, password: password});
 }
-export const updateUser = (userId, user) => {
-    (users = users.map((u) => (u._id === userId ? user : u)));
+export const updateUser = async (userId, user) => {
+    await model.updateOne({_id: userId}, {$set: user});
 }
-export const deleteUser = (userId) => {
-    (users = users.filter((u) => u._id !== userId));
+
+export const deleteUser = async (userId) => {
+    try {
+        console.log(userId);
+        await model.deleteOne({_id: userId});
+        return 204;
+    }
+    catch (error) {
+        return 404;
+    }
 }
+
+export const findUsersByRole = (role) => {
+    return model.find({ role: role });
+}
+
+export const findUsersByPartialName = (partialName) => {
+    const regex = new RegExp(partialName, "i"); // 'i' makes it case-insensitive
+    return model.find({
+                          $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
+                      });
+};
 
