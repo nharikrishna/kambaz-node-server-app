@@ -91,7 +91,7 @@ export default [
     {
         "_id": "M201",
         "name": "Cloud Computing Fundamentals",
-        "course": "CS6620"
+        "course": "6620"
     },
     {
         "_id": "M202",
